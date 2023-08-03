@@ -1,25 +1,31 @@
 // create your App component here
-import { useState, useEffect } from 'react';
+import React ,{useState, useEffect}from 'react'
 
-function App() {
-  const [dogImage, setDogImage] = useState(null);
+const App = () => {
+    const [dogImage, SetDogImage] = useState(null)
+    const [isLoaded, SetIsLoaded] =useState(false)
+    
+    useEffect(()=>{
+        fetch("https://dog.ceo/api/breeds/image/random")
+        .then((res)=>res.json())
+        .then((data)=>{
+            SetDogImage(data.message)
+            SetIsLoaded(true)
+        })
+    },[])
 
-  useEffect(() => {
-    fetch('https://dog.ceo/api/breeds/image/random')
-      .then(response => response.json())
-      .then(data => setDogImage(data.message))
-      .catch(error => console.error(error));
-  }, []);
+ 
 
-  return (
-    <div className="App">
-      {dogImage ? (
-        <img src={dogImage} alt="A Random Dog" />
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
-  );
-}
+    return(
+        <div>
+            {isLoaded?(
+                <img src={dogImage} alt='A Random Dog'></img>
+            ):(
+                <p>Loading...</p>
+            )}
+            
+        </div>
+    )
 
-export default App;
+    }
+export default App
